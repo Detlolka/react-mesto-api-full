@@ -5,6 +5,8 @@ require('dotenv').config();
 const rateLimit = require('express-rate-limit');
 const users = require('./routes/users');
 const cards = require('./routes/cards');
+const { login, createUser } = require('./controllers/user');
+const auth = require('./middlewares/auth');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -25,13 +27,10 @@ const limiter = rateLimit({
 
 app.use(limiter);
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '5f70f05aaacde53b6049683c',
-  };
+app.post('/signup', createUser);
+app.post('/signin', login);
 
-  next();
-});
+app.use(auth);
 
 app.use('/users', users);
 app.use('/cards', cards);
