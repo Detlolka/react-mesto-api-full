@@ -10,12 +10,14 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 2,
     maxlength: 30,
+    default: 'Имя',
   },
   about: {
     type: String,
     required: true,
     minlength: 2,
     maxlength: 30,
+    default: 'О себе',
   },
   avatar: {
     type: String,
@@ -26,6 +28,7 @@ const userSchema = new mongoose.Schema({
       },
       message: 'Введите корректный URL',
     },
+    default: 'https://f2.mylove.ru/uHovon10A7.jpg',
   },
   email: {
     type: String,

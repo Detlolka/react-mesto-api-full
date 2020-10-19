@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+require('dotenv').config();
 const rateLimit = require('express-rate-limit');
 const users = require('./routes/users');
 const cards = require('./routes/cards');
