@@ -2,11 +2,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 require('dotenv').config();
+const { celebrate, Joi, errors } = require('celebrate');
 const rateLimit = require('express-rate-limit');
 const users = require('./routes/users');
 const cards = require('./routes/cards');
 const { login, createUser } = require('./controllers/user');
 const auth = require('./middlewares/auth');
+
+const NotFoundError = require('./utils/Errors');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -27,17 +30,45 @@ const limiter = rateLimit({
 
 app.use(limiter);
 
-app.post('/signup', createUser);
-app.post('/signin', login);
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
+app.post('/signin', celebrate({
+  body: Joi.object().keys({
+    password: Joi.string().required().min(3),
+    email: Joi.string().required().min(3),
+  }),
+}), login);
+
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().min(3),
+    password: Joi.string().required().min(3),
+  }),
+}), createUser);
 
 app.use(auth);
 
-app.use('/users', users);
-app.use('/cards', cards);
+app.use('/cards', celebrate({
+  headers: Joi.object().keys({
+    authorization: Joi.string().required(),
+  }).unknown(true),
+}), auth, cards);
 
-app.all('*', (req, res) => {
-  res.status(404).send({ message: 'Запрашиваемый ресурс не найден' });
+app.use('/users', celebrate({
+  headers: Joi.object().keys({
+    authorization: Joi.string().required(),
+  }).unknown(true),
+}), auth, users);
+
+app.all('*', () => {
+  throw NotFoundError(404, 'Запрашиваемый ресурс не найден');
 });
+
+app.use(errors());
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
