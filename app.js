@@ -15,10 +15,7 @@ const NotFoundError = require('./utils/Errors');
 
 const { PORT = 3000 } = process.env;
 const app = express();
-app.use(cors({
-  origin: 'https://api.detlolka-m.students.nomoreparties.space',
-}));
-
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
