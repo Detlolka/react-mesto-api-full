@@ -19,21 +19,6 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const allowedCors = [
-  'https://localhost:3000',
-  'https://detlolka-m.students.nomoreparties.space',
-  'https://www.detlolka-m.students.nomoreparties.space',
-  'https://api.detlolka-m.students.nomoreparties.space',
-  'https://www.api.detlol.students.nomoreparties.space',
-];
-
-app.use((req, res, next) => {
-  const origin = req.headers;
-  if (allowedCors.includes(origin)) {
-    res.header('Acces-Control-Allow-Origin', origin);
-  }
-  next();
-});
 // Адрес сервера mongo по умолчанию и mydb - имя базы данных
 mongoose.connect('mongodb://localhost:27017/mydb', {
   useNewUrlParser: true,
