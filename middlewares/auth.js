@@ -4,7 +4,6 @@ const { JWT_SECRET } = process.env;
 const NotFoundError = require('../utils/Errors');
 
 module.exports = (req, res, next) => {
-  console.log(req.headers.authorization);
   const { authorization } = req.headers;
   if (!authorization && !authorization.startsWith('Bearer ')) {
     throw new NotFoundError(401, 'Необходима авторизация');
