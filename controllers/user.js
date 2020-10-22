@@ -36,7 +36,13 @@ module.exports.createUser = (req, res, next) => {
   bcrypt.hash(password, 10).then((hashPass) => {
     User.create({ password: hashPass, email })
       .then((user) => res.status(200).send({ _id: user._id }))
-      .catch((error) => next(new NotFoundError(400, error.message)));
+      .catch((error) => {
+        if (error.code === 11000) {
+          next(new NotFoundError(409, error.message));
+        } else {
+          next(new NotFoundError(400, error.message));
+        }
+      });
   });
 };
 

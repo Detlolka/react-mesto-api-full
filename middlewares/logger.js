@@ -1,4 +1,5 @@
 const winston = require('winston');
+// eslint-disable-next-line linebreak-style
 const expressWinston = require('express-winston');
 
 const requestLogger = expressWinston.logger({
