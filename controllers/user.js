@@ -77,7 +77,7 @@ module.exports.changeAvatar = (req, res, next) => {
 
 module.exports.login = (req, res, next) => {
   const { password, email } = req.body;
- console.log(User.findUserByCredentials(email, password))
+  User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });
       res.send({ token });
