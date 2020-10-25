@@ -13,10 +13,13 @@ module.exports.getCards = (req, res, next) => {
 module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
   Card.create({ name, link, owner: req.user._id })
-    .orFail(new NotFoundError(404, 'Данный id отсутсвует в базе данных'))
-    .populate(['owner'])
-    .then((card) => res.status(200).send(card))
-    .catch((error) => next(new NotFoundError(400, error.message)));
+    .then((card) => {
+      Card.findById(card._id).populate(['owner'])
+        .orFail(new NotFoundError(404, 'Данный id отсутствует в базе данных'))
+        .then((card) => {
+          res.status(200).send(card);
+        });
+    }).catch((err) => next(new NotFoundError(400, err.message)));
 };
 
 // Удаление карточки
