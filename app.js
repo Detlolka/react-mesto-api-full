@@ -27,8 +27,8 @@ mongoose.connect('mongodb://localhost:27017/mydb', {
 });
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
+  windowMs: 60 * 60 * 1000,
+  max: 500,
 });
 
 app.use(limiter);
