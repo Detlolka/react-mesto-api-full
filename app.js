@@ -80,6 +80,7 @@ app.use(errors());
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
+  console.log(err);
   res
     .status(statusCode)
     .send({
