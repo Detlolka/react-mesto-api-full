@@ -1,14 +1,17 @@
 # Проект Mesto фронтенд + бэкенд
 
-## Директории
+Заключительная работу по проекту фотокарточек MESTO
 
-`/public` — статика, полученная в результате билда фронтенд-приложения на Реакте  
-`/data` — JSON-файлы для временной эмуляции работы с базой данных  
-`/routes` — папка с файлами роутера  
-  
-Остальные директории вспомогательные, создаются при необходимости разработчиком
+## Технологии
 
-## Запуск проекта
+HTML + CSS + REACT - на фронте
 
-`npm run start` — запускает сервер   
-`npm run dev` — запускает сервер с hot-reload
+NODE + EXPRESS + NGINX + MONGO - на бекенде
+
+## Полезные ссылки
+
+Frontend-code: https://github.com/Detlolka/react-mesto-auth,
+
+Backend-code: https://github.com/Detlolka/react-mesto-api-full,
+
+Project: http://www.detlolka-m.students.nomoreparties.space/
