@@ -16,8 +16,8 @@ module.exports.createCard = (req, res, next) => {
     .then((card) => {
       Card.findById(card._id).populate(['owner'])
         .orFail(new NotFoundError(404, 'Данный id отсутствует в базе данных'))
-        .then((card) => {
-          res.status(200).send(card);
+        .then((cardAdd) => {
+          res.status(200).send(cardAdd);
         });
     }).catch((err) => next(new NotFoundError(400, err.message)));
 };
