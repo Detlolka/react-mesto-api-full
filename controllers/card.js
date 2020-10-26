@@ -32,7 +32,7 @@ module.exports.deleteCard = (req, res, next) => {
         throw new NotFoundError(403, 'Вы пытаетесь удалить чужую карточку');
       }
       card.remove()
-        .then((deleteCard) => res.send({ data: deleteCard }));
+        .then((deleteCard) => res.send(deleteCard));
     })
     .catch(next);
 };
