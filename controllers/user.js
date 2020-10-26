@@ -38,7 +38,7 @@ module.exports.createUser = (req, res, next) => {
       .then((user) => res.status(200).send({ _id: user._id }))
       .catch((error) => {
         if (error.code === 11000) {
-          next(new NotFoundError(409, error.message));
+          next(new NotFoundError(409, 'Пользователь с данным email уже зарегистрирован'));
         } else {
           next(new NotFoundError(400, error.message));
         }
