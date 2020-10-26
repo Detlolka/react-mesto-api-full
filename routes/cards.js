@@ -12,7 +12,7 @@ router.get('/', getCards);
 router.post('/', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    link: Joi.string().required().pattern(/^(http|https):\/\/[^ "]+$/),
+    link: Joi.string().required().pattern(/^(https?:\/\/(www\.)?)[\w-]+\.[\w./():,-]+#?$/),
   }),
 }), createCard);
 
@@ -23,13 +23,13 @@ router.delete('/:id', celebrate({
   }),
 }), deleteCard);
 
-router.put('/likes/:cardId', celebrate({
+router.put('/:cardId/likes', celebrate({
   params: Joi.object().keys({
     cardId: Joi.string().hex().required().length(24),
   }),
 }), likeCard);
 
-router.delete('/likes/:cardId', celebrate({
+router.delete('/:cardId/likes', celebrate({
   params: Joi.object().keys({
     cardId: Joi.string().hex().required().length(24),
   }),

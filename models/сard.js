@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const linkValidate = /^(http|https):\/\/[^ "]+$/;
+const linkValidate = /^(https?:\/\/(www\.)?)[\w-]+\.[\w./():,-]+#?$/;
 
 const cardSchema = mongoose.Schema(
   {

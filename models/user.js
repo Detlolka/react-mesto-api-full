@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const isEmail = require('validator/lib/isEmail');
 const NotFoundError = require('../utils/Errors');
 
-const linkValidate = /^(http|https):\/\/[^ "]+$/;
+const linkValidate = /^(https?:\/\/(www\.)?)[\w-]+\.[\w./():,-]+#?$/;
 
 const userSchema = new mongoose.Schema({
   name: {

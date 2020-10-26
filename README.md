@@ -14,6 +14,8 @@ Frontend-code: https://github.com/Detlolka/react-mesto-auth,
 
 Backend-code: https://github.com/Detlolka/react-mesto-api-full,
 
-Project: http://www.detlolka-m.students.nomoreparties.space/
+Project-frontend: http://www.detlolka-m.students.nomoreparties.space/
+
+Project-backend:  http://api.detlolka-m.students.nomoreparties.space/
 
 Public IP: http://84.201.153.51/
