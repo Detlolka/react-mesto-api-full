@@ -19,15 +19,21 @@ module.exports.createCard = (req, res, next) => {
         .then((cardAdd) => {
           res.status(200).send(cardAdd);
         });
-    }).catch((err) => next(new NotFoundError(400, err.message)));
+    }).catch(() => next(new NotFoundError(400, 'Невалидный Id')));
 };
 
 // Удаление карточки
 module.exports.deleteCard = (req, res, next) => {
-  Card.findOneAndDelete({ _id: req.params.id })
-    .orFail(new NotFoundError(404, 'Данный id отсутствует в базе данных'))
-    .populate(['owner', 'likes'])
-    .then((card) => res.status(200).send(card))
+  const { cardId } = req.params;
+  Card.findById(cardId)
+    .orFail(new NotFoundError(404, 'Карточка отсутствует в базе данных'))
+    .then((card) => {
+      if (card.owner.toString() === req.user._id) {
+        throw new NotFoundError(403, 'Вы пытаетесь удалить чужую карточку');
+      }
+      card.remove()
+        .then((deleteCard) => res.send({ data: deleteCard }));
+    })
     .catch(next);
 };
 
@@ -38,7 +44,7 @@ module.exports.likeCard = (req, res, next) => {
     { new: true }).populate(['owner', 'likes'])
     .orFail(new NotFoundError(404, 'Данный id отсутствует в базе данных'))
     .then((card) => res.status(200).send(card))
-    .catch(next);
+    .catch(() => next(new NotFoundError(400, 'Невалидный Id')));
 };
 
 // Удаление лайка с карточки
@@ -49,5 +55,5 @@ module.exports.dislikeCard = (req, res, next) => {
     { new: true }).populate(['owner', 'likes'])
     .orFail(new NotFoundError(404, 'Данный id отсутствует в базе данных'))
     .then((card) => res.status(200).send(card))
-    .catch(next);
+    .catch(() => next(new NotFoundError(400, 'Невалидный Id')));
 };
