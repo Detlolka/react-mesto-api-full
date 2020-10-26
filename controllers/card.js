@@ -24,17 +24,20 @@ module.exports.createCard = (req, res, next) => {
 
 // Удаление карточки
 module.exports.deleteCard = (req, res, next) => {
-  const { cardId } = req.params;
-  Card.findById(cardId)
-    .orFail(new NotFoundError(404, 'Карточка отсутствует в базе данных'))
+  Card.findById(req.params.id)
+    .orFail(new NotFoundError(404, 'Данный id отсутствует в базе данных'))
     .then((card) => {
-      if (card.owner.toString() !== req.user._id) {
+      if (card.owner.toString() === req.user._id.toString()) {
+        Card.findOneAndDelete({ _id: card._id })
+          .populate(['owner', 'likes'])
+          .orFail(new NotFoundError(404, 'Данный id отсутствует в базе данных'))
+          .then((deletedCard) => {
+            res.status(200).send(deletedCard);
+          });
+      } else {
         throw new NotFoundError(403, 'Вы пытаетесь удалить чужую карточку');
       }
-      card.remove()
-        .then((deleteCard) => res.send(deleteCard));
-    })
-    .catch(next);
+    }).catch(next);
 };
 
 // Постановка лайка карточке
