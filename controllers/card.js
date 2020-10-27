@@ -51,7 +51,6 @@ module.exports.likeCard = (req, res, next) => {
 };
 
 // Удаление лайка с карточки
-
 module.exports.dislikeCard = (req, res, next) => {
   Card.findOneAndUpdate({ _id: req.params.cardId },
     { $pull: { likes: req.user._id } },
