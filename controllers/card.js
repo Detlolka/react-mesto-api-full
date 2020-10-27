@@ -45,9 +45,9 @@ module.exports.likeCard = (req, res, next) => {
   Card.findOneAndUpdate({ _id: req.params.cardId },
     { $addToSet: { likes: req.user._id } },
     { new: true }).populate(['owner', 'likes'])
-    .orFail(new NotFoundError(400, 'Невалидный Id'))
+    .orFail(new NotFoundError(404, 'Данного ID нет в базе'))
     .then((card) => res.status(200).send(card))
-    .catch(() => next(new NotFoundError(404, 'Данный id отсутствует в базе данных')));
+    .catch(next);
 };
 
 // Удаление лайка с карточки
@@ -56,7 +56,7 @@ module.exports.dislikeCard = (req, res, next) => {
   Card.findOneAndUpdate({ _id: req.params.cardId },
     { $pull: { likes: req.user._id } },
     { new: true }).populate(['owner', 'likes'])
-    .orFail(new NotFoundError())
+    .orFail(new NotFoundError(404, 'Данного ID нет в базе'))
     .then((card) => res.status(200).send(card))
-    .catch(() => next(new NotFoundError(404, 'Данный id отсутствует в базе данных')));
+    .catch(next);
 };
